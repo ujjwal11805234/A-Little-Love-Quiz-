@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <style>
+    :root{--pink:#ff6f9f;--deep:#d94c82;--pale:#fff0f5;--ink:#503342}
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;background:linear-gradient(135deg,#fff0f5,#ffe3ed 55%,#fff7fb);font-family:Arial,sans-serif;color:var(--ink);display:flex;align-items:center;justify-content:center;padding:20px}
+    .card{width:min(100%,560px);background:#ffffffed;border:1px solid #ffd0df;border-radius:28px;padding:28px;box-shadow:0 18px 55px #b94e7520}
+    .top{text-align:center}.heart{font-size:34px;animation:pulse 1.5s infinite}.eyebrow{color:var(--deep);font-size:12px;font-weight:bold;letter-spacing:2px;text-transform:uppercase}
+    h1{font-size:30px;margin:8px 0}.sub{color:#8b6b7a;line-height:1.5;margin:8px auto 22px;max-width:390px}
+    .progress-wrap{height:8px;background:#ffe1eb;border-radius:20px;overflow:hidden;margin:20px 0 8px}.progress{height:100%;width:10%;background:linear-gradient(90deg,#ff9bbb,#e85b91);transition:width .3s}
+    .step{font-size:12px;color:#a0788a;text-align:right;margin-bottom:20px}
+    .question{font-size:21px;line-height:1.35;font-weight:bold;margin:12px 0 18px}.hint{font-size:13px;color:#9a7888;margin-top:-10px;margin-bottom:14px}
+    input,textarea{width:100%;border:1.5px solid #f4c4d5;border-radius:15px;padding:14px;font:inherit;color:var(--ink);background:#fffafd;outline:none}
+    textarea{min-height:125px;resize:vertical} input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px #ff6f9f20}
+    .actions{display:flex;gap:10px;margin-top:22px}.btn{border:0;border-radius:15px;padding:14px 18px;font-weight:bold;font-size:15px;cursor:pointer}
+    .primary{background:linear-gradient(90deg,#ff83aa,#e95891);color:white;flex:1;box-shadow:0 7px 16px #e9589130}.secondary{background:#fff0f5;color:#a64c70}
+    .btn:disabled{opacity:.55;cursor:wait}.hidden{display:none!important}.center{text-align:center}.success{font-size:48px;margin:10px}.small{font-size:12px;color:#a0808e;margin-top:18px}
+    .error{color:#bd315f;font-size:13px;margin-top:12px}
+    @keyframes pulse{50%{transform:scale(1.12)}}
+    @media(max-width:420px){.card{padding:22px 18px}h1{font-size:26px}.question{font-size:19px}}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <section id="intro" class="top">
+      <div class="heart">💗</div><div class="eyebrow">A tiny relationship quiz</div>
+      <h1>How well do you know us?</h1>
+      <p class="sub">A few cute questions, a little honesty, and lots of love. Answer from your heart. 🥰</p>
+      <button class="btn primary" onclick="startQuiz()">Let's play 💌</button>
+      <div class="small">Just for the two of us · 10 questions</div>
+    </section>
+
+    <section id="quiz" class="hidden">
+      <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+      <div class="step" id="step">Question 1 of 10</div>
+      <div class="question" id="question"></div><div class="hint" id="hint"></div>
+      <div id="answerArea"></div>
+      <div class="error" id="error"></div>
+      <div class="actions"><button class="btn secondary" id="back" onclick="previous()">← Back</button><button class="btn primary" id="next" onclick="next()">Next →</button></div>
+    </section>
+
+    <section id="done" class="top hidden">
+      <div class="success">💖</div><h1>You're my favourite person!</h1>
+      <p class="sub" id="doneText">Your answers are being saved...</p>
+      <button class="btn primary" onclick="playAgain()">Play again ↻</button>
+      <div class="small">Made with a little extra love ✨</div>
+    </section>
+  </main>
+<script>
+const questions = [
+ ["What was your first impression of me?","Be honest… I promise I won't judge 😇","text"],
+ ["What is your favourite memory of us?","The one that still makes you smile 💭","text"],
+ ["What is one thing I do that instantly makes you smile?","It can be something tiny 💕","text"],
+ ["Who is more dramatic between us? 😂","No diplomatic answers allowed!","choice",["Me 🙋‍♀️","You 😏","Both of us 🤝"]],
+ ["What is something you wish we did together more often?","Your little wishlist for us 🌷","text"],
+ ["How loved and appreciated do you feel in this relationship?","Rate it from 1 (could be better) to 10 (so loved!)","scale"],
+ ["Is there anything I could improve as a boyfriend?","A safe space for honest feedback. I'll listen. 🫶","text"],
+ ["What is one thing about us that you would never want to change?","Something that makes us, us ❤️","text"],
+ ["If we could go on a surprise date anywhere, where would you take me?","Dream big, date planner! ✨","text"],
+ ["On a scale of 1–10, how happy are you with our relationship?","And maybe tell me why, if you want 💗","scale"]
+];
+let current=0, answers=Array(10).fill(""), name="";
+function startQuiz(){document.getElementById("intro").classList.add("hidden");document.getElementById("quiz").classList.remove("hidden");render();}
+function render(){
+ const q=questions[current];document.getElementById("step").textContent=`Question ${current+1} of 10`;
+ document.getElementById("progress").style.width=((current+1)*10)+"%";
+ document.getElementById("question").textContent=q[0];document.getElementById("hint").textContent=q[1];
+ document.getElementById("error").textContent="";
+ const area=document.getElementById("answerArea");area.innerHTML="";
+ if(current===0){const n=document.createElement("input");n.id="playerName";n.placeholder="Your name or cute nickname (optional)";n.value=name;area.appendChild(n);}
+ if(q[2]==="text"){const t=document.createElement("textarea");t.id="answer";t.placeholder="Type your answer here...";t.value=answers[current];area.appendChild(t);}
+ else if(q[2]==="choice"){q[3].forEach((v,i)=>{const label=document.createElement("label");label.style.cssText="display:block;padding:13px;margin:9px 0;border:1px solid #f4c4d5;border-radius:13px;background:#fffafd;cursor:pointer";
+ const r=document.createElement("input");r.type="radio";r.name="choice";r.value=v;r.style.width="auto";r.checked=answers[current]===v;label.append(r,document.createTextNode(" "+v));area.appendChild(label);});}
+ else {const wrap=document.createElement("div");wrap.style.cssText="display:flex;gap:8px;flex-wrap:wrap";
+ for(let i=1;i<=10;i++){const b=document.createElement("button");b.type="button";b.className="btn "+(answers[current]===String(i)?"primary":"secondary");b.textContent=i;b.style.flex="1";b.onclick=()=>{answers[current]=String(i);render();};wrap.appendChild(b);}area.appendChild(wrap);}
+ document.getElementById("back").style.visibility=current===0?"hidden":"visible";
+ document.getElementById("next").textContent=current===9?"Send my answers 💌":"Next →";
+}
+function capture(){const q=questions[current];if(current===0){const n=document.getElementById("playerName");if(n)name=n.value.trim();}
+ if(q[2]==="text"){const a=document.getElementById("answer");if(a)answers[current]=a.value.trim();}
+ if(q[2]==="choice"){const r=document.querySelector('input[name="choice"]:checked');if(r)answers[current]=r.value;}
+}
+function next(){capture();if(!answers[current]){document.getElementById("error").textContent="A little answer before we continue 💗";return;}
+ if(current<9){current++;render();}else submit();}
+function previous(){capture();if(current>0){current--;render();}}
+function submit(){const btn=document.getElementById("next");btn.disabled=true;btn.textContent="Sending...";
+ google.script.run.withSuccessHandler(msg=>{document.getElementById("quiz").classList.add("hidden");document.getElementById("done").classList.remove("hidden");document.getElementById("doneText").textContent=msg;})
+ .withFailureHandler(err=>{btn.disabled=false;btn.textContent="Try again";document.getElementById("error").textContent=err.message||"Something went wrong. Please try again.";})
+ .submitAnswers({name:name,answers:answers});}
+function playAgain(){current=0;answers=Array(10).fill("");name="";document.getElementById("done").classList.add("hidden");document.getElementById("intro").classList.remove("hidden");}
+</script>
+</body></html>
