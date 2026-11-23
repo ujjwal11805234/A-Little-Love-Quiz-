@@ -1,6 +1,43 @@
-# A Little Love Quiz ❤️
+# 💗 A Little Love Quiz
 
-A cute, mobile-friendly 10-question relationship quiz built with Google Apps Script and Google Sheets. Answers are saved to a private spreadsheet owned by the person deploying the app.
+A cute, interactive relationship quiz designed to make answering questions about love and relationships fun and engaging.
+
+Built using HTML, CSS, JavaScript, Google Apps Script, and Google Sheets.
+
+## ✨ Features
+
+- 10 interactive relationship questions.
+- Cute, responsive and mobile-friendly UI.
+- Dynamic question navigation and progress tracking.
+- Automatic response storage using Google Sheets.
+- Private admin dashboard to view submitted answers.
+- Clear responses and start a fresh round.
+- Cloud-based deployment using Google Apps Script.
+
+## 🛠️ Tech Stack
+
+- **Frontend:** HTML, CSS, JavaScript
+- **Backend:** Google Apps Script
+- **Database:** Google Sheets
+- **Hosting:** Google Apps Script
+
+## 🚀 Getting Started
+
+1. Clone or download this repository.
+2. Create a new project at [Google Apps Script](https://script.google.com).
+3. Add the supplied source files.
+4. Configure your private admin PIN using Script Properties.
+5. Run the `setup()` function.
+6. Deploy the application as a Web App.
+
+## 🔐 Security
+
+Do not expose your admin PIN, private spreadsheet details, or other credentials in a public repository.
+
+## 📄 License
+
+MIT License
+
 
 ## Setup (about 10 minutes)
 
