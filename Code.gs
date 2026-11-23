@@ -1,5 +1,5 @@
 const APP_TITLE = "A Little Love Quiz ❤️";
-const ADMIN_PIN = "2468"; // CHANGE THIS before deploying.
+const ADMIN_PIN = "****"; // CHANGE THIS before deploying.
 const SHEET_NAME = "Responses";
 
 function doGet(e) {
