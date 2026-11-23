@@ -45,7 +45,7 @@ MIT License
 2. Visit https://script.google.com and click **New project**.
 3. Replace the contents of `Code.gs` with the supplied `Code.gs`.
 4. Add two HTML files using **+ → HTML**: name one `Index` and paste `Index.html`; name the other `Admin` and paste `Admin.html`.
-5. In `Code.gs`, change `ADMIN_PIN` from `2468` to a private PIN you will remember.
+5. In `Code.gs`, change `ADMIN_PIN` from `****` to a private PIN you will remember.
 6. In the Apps Script editor, select the `setup` function and click **Run**. Approve the requested Google permissions. Open **Execution log** to find the private Google Sheet URL. Keep that sheet private.
 7. Click **Deploy → New deployment**. Select the gear beside “Select type” → **Web app**.
 8. Set **Execute as: Me** and **Who has access: Anyone** (or the broadest option available that lets your girlfriend open it). Click **Deploy** and authorize if prompted.
